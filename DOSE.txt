@@ -1,0 +1,1445 @@
+Package ‘DOSE’
+March 24, 2022
+Type Package
+Title Disease Ontology Semantic and Enrichment analysis
+Version 3.20.1
+Maintainer Guangchuang Yu <guangchuangyu@gmail.com>
+Description This package implements five methods proposed by
+Resnik, Schlicker, Jiang, Lin and Wang respectively
+for measuring semantic similarities among DO terms and
+gene products. Enrichment analyses including hypergeometric
+model and gene set enrichment analysis are also implemented
+for discovering disease associations of high-throughput
+biological data.
+Depends R (>= 3.5.0)
+Imports AnnotationDbi, BiocParallel, DO.db, fgsea, ggplot2, GOSemSim
+(>= 2.0.0), methods, qvalue, reshape2, stats, utils
+Suggests prettydoc, clusterProfiler, knitr, rmarkdown, org.Hs.eg.db,
+testthat
+VignetteBuilder knitr
+ByteCompile true
+License Artistic-2.0
+Encoding UTF-8
+URL https://yulab-smu.top/biomedical-knowledge-mining-book/
+BugReports https://github.com/GuangchuangYu/DOSE/issues
+biocViews Annotation, Visualization, MultipleComparison,
+GeneSetEnrichment, Pathways, Software
+RoxygenNote 7.1.1
+git_url https://git.bioconductor.org/packages/DOSE
+git_branch RELEASE_3_14
+git_last_commit bf434f2
+git_last_commit_date 2021-11-17
+1
+
+R topics documented:
+
+2
+Date/Publication 2022-03-24
+Author Guangchuang Yu [aut, cre],
+Li-Gen Wang [ctb],
+Vladislav Petyuk [ctb],
+Giovanni Dall'Olio [ctb],
+Erqiang Hu [ctb]
+
+R topics documented:
+DOSE-package . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+clusterSim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+compareClusterResult-class . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+computeIC . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+DataSet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+doSim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enrichDGN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enrichDGNv . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enrichDO . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enricher_internal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enrichNCG . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+enrichResult-class . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+EXTID2NAME . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gene2DO . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+geneID . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+geneInCategory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+geneSim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gseaResult-class . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+GSEA_internal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gseDGN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gseDO . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gseNCG . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gsfilter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+mclusterSim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+parse_ratio . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+rebuildAnnoData . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+setReadable . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+show . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+simplot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+theme_dose . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Index
+
+3
+3
+4
+5
+5
+6
+6
+7
+9
+10
+11
+12
+13
+13
+14
+14
+15
+16
+16
+17
+18
+19
+20
+21
+22
+22
+23
+23
+24
+25
+25
+27
+
+clusterSim
+
+DOSE-package
+
+3
+
+Disease Ontology Semantic and Enrichment analysis Implemented five
+methods proposed by Resnik, Schlicker, Jiang, Lin and Wang respectively for measuring DO semantic similarities, and hypergeometric
+test for enrichment analysis.
+
+Description
+This package is designed to estimate DO-based semantic similarity measurement and enrichment
+analysis.
+Details
+Package:
+Type:
+Version:
+Date:
+biocViews:
+Depends:
+Imports:
+Suggests:
+License:
+
+DOSE
+Package
+2.3.5
+2-27-2012
+Bioinformatics, Annotation
+methods, AnnotationDbi, DO.db
+clusterProfiler, GOSemSim
+Artistic-2.0
+
+Author(s)
+Guangchuang Yu, Li-Gen Wang
+Maintainer: Guangchuang Yu <guangchuangyu@gmail.com>
+See Also
+enrichResult
+
+clusterSim
+
+clusterSim
+
+Description
+semantic similarity between two gene clusters
+Usage
+clusterSim(cluster1, cluster2, measure = "Wang", combine = "BMA")
+
+4
+
+compareClusterResult-class
+
+Arguments
+cluster1
+
+a vector of gene IDs
+
+cluster2
+
+another vector of gene IDs
+
+measure
+
+One of "Resnik", "Lin", "Rel", "Jiang" and "Wang" methods.
+
+combine
+
+One of "max", "avg", "rcmax", "BMA" methods, for combining
+
+Details
+given two gene clusters, this function calculates semantic similarity between them.
+Value
+similarity
+Author(s)
+Yu Guangchuang
+Examples
+cluster1 <- c("835", "5261","241", "994")
+cluster2 <- c("307", "308", "317", "321", "506", "540", "378", "388", "396")
+clusterSim(cluster1, cluster2)
+
+compareClusterResult-class
+Class "compareClusterResult" This class represents the comparison
+result of gene clusters by GO categories at specific level or GO enrichment analysis.
+
+Description
+Class "compareClusterResult" This class represents the comparison result of gene clusters by GO
+categories at specific level or GO enrichment analysis.
+Slots
+compareClusterResult cluster comparing result
+geneClusters a list of genes
+fun one of groupGO, enrichGO and enrichKEGG
+gene2Symbol gene ID to Symbol
+keytype Gene ID type
+readable logical flag of gene ID in symbol or not.
+.call function call
+
+computeIC
+
+5
+
+termsim Similarity between term
+method method of calculating the similarity between nodes
+dr dimension reduction result
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+See Also
+enrichResult
+
+compute information content
+
+computeIC
+
+Description
+compute information content
+Usage
+computeIC(ont = "DO", organism = "human")
+Arguments
+ont
+
+"DO"
+
+organism
+
+"human"
+
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+
+DataSet
+
+Datasets
+
+Description
+Information content and DO term to entrez gene IDs mapping
+
+6
+
+enrichDGN
+
+doSim
+
+doSim
+
+Description
+measuring similarities between two DO term vectors.
+
+Usage
+doSim(DOID1, DOID2, measure = "Wang")
+
+Arguments
+DOID1
+
+DO term vector
+
+DOID2
+
+DO term vector
+
+measure
+
+one of "Wang", "Resnik", "Rel", "Jiang", and "Lin".
+
+Details
+provide two DO term vectors, this function will calculate their similarities.
+
+Value
+score matrix
+
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+
+enrichDGN
+
+Enrichment analysis based on the DisGeNET (http://www.
+disgenet.org/)
+
+Description
+given a vector of genes, this function will return the enrichment NCG categories with FDR control
+
+enrichDGNv
+
+7
+
+Usage
+enrichDGN(
+gene,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+universe,
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+readable = FALSE
+)
+Arguments
+gene
+
+a vector of entrez gene id
+
+pvalueCutoff
+
+pvalue cutoff
+
+pAdjustMethod
+
+one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+
+universe
+
+background genes
+
+minGSSize
+
+minimal size of genes annotated by NCG category for testing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+qvalueCutoff
+
+qvalue cutoff
+
+readable
+
+whether mapping gene ID to gene Name
+
+Value
+A enrichResult instance
+Author(s)
+Guangchuang Yu
+References
+Janet et al. (2015) DisGeNET: a discovery platform for the dynamical exploration of human
+diseases and their genes. Database bav028 http://database.oxfordjournals.org/content/
+2015/bav028.long
+
+enrichDGNv
+
+enrichDGN
+
+Description
+Enrichment analysis based on the DisGeNET (http://www.disgenet.org/)
+
+8
+
+enrichDGNv
+
+Usage
+enrichDGNv(
+snp,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+universe,
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+readable = FALSE
+)
+Arguments
+snp
+
+a vector of SNP
+
+pvalueCutoff
+
+pvalue cutoff
+
+pAdjustMethod
+
+one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+
+universe
+
+background genes
+
+minGSSize
+
+minimal size of genes annotated by NCG category for testing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+qvalueCutoff
+
+qvalue cutoff
+
+readable
+
+whether mapping gene ID to gene Name
+
+Details
+given a vector of genes, this function will return the enrichment NCG categories with FDR control
+Value
+A enrichResult instance
+Author(s)
+Guangchuang Yu
+References
+Janet et al. (2015) DisGeNET: a discovery platform for the dynamical exploration of human
+diseases and their genes. Database bav028 http://database.oxfordjournals.org/content/
+2015/bav028.long
+
+enrichDO
+
+9
+
+DO Enrichment Analysis
+
+enrichDO
+
+Description
+Given a vector of genes, this function will return the enrichment DO categories with FDR control.
+Usage
+enrichDO(
+gene,
+ont = "DO",
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+universe,
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+readable = FALSE
+)
+Arguments
+gene
+
+a vector of entrez gene id
+
+ont
+
+one of DO or DOLite.
+
+pvalueCutoff
+
+pvalue cutoff
+
+pAdjustMethod
+
+one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+
+universe
+
+background genes
+
+minGSSize
+
+minimal size of genes annotated by NCG category for testing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+qvalueCutoff
+
+qvalue cutoff
+
+readable
+
+whether mapping gene ID to gene Name
+
+Value
+A enrichResult instance.
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+See Also
+enrichResult-class
+
+10
+
+enricher_internal
+
+Examples
+data(geneList)
+gene = names(geneList)[geneList > 1]
+yy = enrichDO(gene, pvalueCutoff=0.05)
+summary(yy)
+
+enricher_internal
+
+enrich.internal
+
+Description
+interal method for enrichment analysis
+Usage
+enricher_internal(
+gene,
+pvalueCutoff,
+pAdjustMethod = "BH",
+universe = NULL,
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+USER_DATA
+)
+Arguments
+gene
+
+a vector of entrez gene id.
+
+pvalueCutoff
+
+Cutoff value of pvalue.
+
+pAdjustMethod
+
+one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+
+universe
+
+background genes
+
+minGSSize
+
+minimal size of genes annotated by Ontology term for testing.
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+qvalueCutoff
+
+cutoff of qvalue
+
+USER_DATA
+
+ontology information
+
+Details
+using the hypergeometric model
+Value
+A enrichResult instance.
+
+enrichNCG
+
+11
+
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+
+enrichNCG
+
+enrichNCG
+
+Description
+Enrichment analysis based on the Network of Cancer Genes database (http://ncg.kcl.ac.uk/)
+Usage
+enrichNCG(
+gene,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+universe,
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+readable = FALSE
+)
+Arguments
+gene
+
+a vector of entrez gene id
+
+pvalueCutoff
+
+pvalue cutoff
+
+pAdjustMethod
+
+one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
+
+universe
+
+background genes
+
+minGSSize
+
+minimal size of genes annotated by NCG category for testing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+qvalueCutoff
+
+qvalue cutoff
+
+readable
+
+whether mapping gene ID to gene Name
+
+Details
+given a vector of genes, this function will return the enrichment NCG categories with FDR control
+Value
+A enrichResult instance
+Author(s)
+Guangchuang Yu
+
+12
+
+enrichResult-class
+
+enrichResult-class
+
+Class "enrichResult" This class represents the result of enrichment
+analysis.
+
+Description
+Class "enrichResult" This class represents the result of enrichment analysis.
+Slots
+result enrichment analysis
+pvalueCutoff pvalueCutoff
+pAdjustMethod pvalue adjust method
+qvalueCutoff qvalueCutoff
+organism only "human" supported
+ontology biological ontology
+gene Gene IDs
+keytype Gene ID type
+universe background gene
+gene2Symbol mapping gene to Symbol
+geneSets gene sets
+readable logical flag of gene ID in symbol or not.
+termsim Similarity between term
+method method of calculating the similarity between nodes
+dr dimension reduction result
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+See Also
+enrichDO
+
+EXTID2NAME
+
+EXTID2NAME
+
+13
+
+EXTID2NAME
+
+Description
+mapping gene ID to gene Symbol
+Usage
+EXTID2NAME(OrgDb, geneID, keytype)
+Arguments
+OrgDb
+geneID
+keytype
+
+OrgDb
+entrez gene ID
+keytype
+
+Value
+gene symbol
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+
+gene2DO
+
+convert Gene ID to DO Terms
+
+Description
+provide gene ID, this function will convert to the corresponding DO Terms
+Usage
+gene2DO(gene)
+Arguments
+gene
+
+entrez gene ID
+
+Value
+DO Terms
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+
+14
+
+geneInCategory
+
+geneID generic
+
+geneID
+
+Description
+geneID generic
+Usage
+geneID(x)
+Arguments
+x
+
+enrichResult object
+
+Value
+’geneID’ return the ’geneID’ column of the enriched result which can be converted to data.frame
+via ’as.data.frame’
+Examples
+data(geneList, package="DOSE")
+de <- names(geneList)[1:100]
+x <- enrichDO(de)
+geneID(x)
+
+geneInCategory generic
+
+geneInCategory
+
+Description
+geneInCategory generic
+Usage
+geneInCategory(x)
+Arguments
+x
+
+enrichResult
+
+Value
+’geneInCategory’ return a list of genes, by spliting the input gene vector to enriched functional
+categories
+
+geneSim
+
+15
+
+Examples
+data(geneList, package="DOSE")
+de <- names(geneList)[1:100]
+x <- enrichDO(de)
+geneInCategory(x)
+
+geneSim
+
+geneSim
+
+Description
+measuring similarities bewteen two gene vectors.
+Usage
+geneSim(geneID1, geneID2 = NULL, measure = "Wang", combine = "BMA")
+
+Arguments
+geneID1
+
+entrez gene vector
+
+geneID2
+
+entrez gene vector
+
+measure
+
+one of "Wang", "Resnik", "Rel", "Jiang", and "Lin".
+
+combine
+
+One of "max", "avg", "rcmax", "BMA" methods, for combining semantic similarity scores of multiple DO terms associated with gene/protein.
+
+Details
+provide two entrez gene vectors, this function will calculate their similarity.
+Value
+score matrix
+Author(s)
+Guangchuang Yu http://ygc.name
+
+16
+
+GSEA_internal
+
+gseaResult-class
+
+Class "gseaResult" This class represents the result of GSEA analysis
+
+Description
+Class "gseaResult" This class represents the result of GSEA analysis
+Slots
+result GSEA anaysis
+organism organism
+setType setType
+geneSets geneSets
+geneList order rank geneList
+keytype ID type of gene
+permScores permutation scores
+params parameters
+gene2Symbol gene ID to Symbol
+readable whether convert gene ID to symbol
+dr dimension reduction result
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+
+GSEA_internal
+
+GSEA_internal
+
+Description
+generic function for gene set enrichment analysis
+Usage
+GSEA_internal(
+geneList,
+exponent,
+minGSSize,
+maxGSSize,
+eps,
+pvalueCutoff,
+pAdjustMethod,
+
+gseDGN
+
+17
+
+verbose,
+seed = FALSE,
+USER_DATA,
+by = "fgsea",
+...
+)
+
+Arguments
+geneList
+
+order ranked geneList
+
+exponent
+
+weight of each step
+
+minGSSize
+
+minimal size of each geneSet for analyzing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+eps
+
+This parameter sets the boundary for calculating the p value.
+
+pvalueCutoff
+
+p value Cutoff
+
+pAdjustMethod
+
+p value adjustment method
+
+verbose
+
+print message or not
+
+seed
+
+set seed inside the function to make result reproducible. FALSE by default.
+
+USER_DATA
+
+annotation data
+
+by
+
+one of ’fgsea’ or ’DOSE’
+
+...
+
+other parameter
+
+Value
+gseaResult object
+Author(s)
+Yu Guangchuang
+
+gseDGN
+
+Description
+perform gsea analysis
+
+DisGeNET Gene Set Enrichment Analysis
+
+18
+
+gseDO
+
+Usage
+gseDGN(
+geneList,
+exponent = 1,
+minGSSize = 10,
+maxGSSize = 500,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+verbose = TRUE,
+seed = FALSE,
+by = "fgsea",
+...
+)
+Arguments
+geneList
+
+order ranked geneList
+
+exponent
+
+weight of each step
+
+minGSSize
+
+minimal size of each geneSet for analyzing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+pvalueCutoff
+
+pvalue Cutoff
+
+pAdjustMethod
+
+p value adjustment method
+
+verbose
+
+print message or not
+
+seed
+
+logical
+
+by
+
+one of ’fgsea’ or ’DOSE’
+
+...
+
+other parameter
+
+Value
+gseaResult object
+Author(s)
+Yu Guangchuang
+
+gseDO
+
+Description
+perform gsea analysis
+
+DO Gene Set Enrichment Analysis
+
+gseNCG
+
+19
+
+Usage
+gseDO(
+geneList,
+exponent = 1,
+minGSSize = 10,
+maxGSSize = 500,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+verbose = TRUE,
+seed = FALSE,
+by = "fgsea",
+...
+)
+Arguments
+geneList
+
+order ranked geneList
+
+exponent
+
+weight of each step
+
+minGSSize
+
+minimal size of each geneSet for analyzing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+pvalueCutoff
+
+pvalue Cutoff
+
+pAdjustMethod
+
+p value adjustment method
+
+verbose
+
+print message or not
+
+seed
+
+logical
+
+by
+
+one of ’fgsea’ or ’DOSE’
+
+...
+
+other parameter
+
+Value
+gseaResult object
+Author(s)
+Yu Guangchuang
+
+gseNCG
+
+Description
+perform gsea analysis
+
+NCG Gene Set Enrichment Analysis
+
+20
+
+gsfilter
+
+Usage
+gseNCG(
+geneList,
+exponent = 1,
+minGSSize = 10,
+maxGSSize = 500,
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+verbose = TRUE,
+seed = FALSE,
+by = "fgsea",
+...
+)
+Arguments
+geneList
+
+order ranked geneList
+
+exponent
+
+weight of each step
+
+minGSSize
+
+minimal size of each geneSet for analyzing
+
+maxGSSize
+
+maximal size of each geneSet for analyzing
+
+pvalueCutoff
+
+pvalue Cutoff
+
+pAdjustMethod
+
+p value adjustment method
+
+verbose
+
+print message or not
+
+seed
+
+logical
+
+by
+
+one of ’fgsea’ or ’DOSE’
+
+...
+
+other parameter
+
+Value
+gseaResult object
+Author(s)
+Yu Guangchuang
+
+gsfilter
+
+gsfilter
+
+Description
+filter enriched result by gene set size or gene count
+Usage
+gsfilter(x, by = "GSSize", min = NA, max = NA)
+
+mclusterSim
+
+21
+
+Arguments
+x
+by
+min
+max
+
+instance of enrichResult or compareClusterResult
+one of ’GSSize’ or ’Count’
+minimal size
+maximal size
+
+Value
+update object
+Author(s)
+Guangchuang Yu
+
+mclusterSim
+
+mclusterSim
+
+Description
+Pairwise semantic similarity for a list of gene clusters
+Usage
+mclusterSim(clusters, measure = "Wang", combine = "BMA")
+Arguments
+clusters
+measure
+combine
+
+A list of gene clusters
+one of "Wang", "Resnik", "Rel", "Jiang", and "Lin".
+One of "max", "avg", "rcmax", "BMA" methods, for combining semantic similarity scores of multiple DO terms associated with gene/protein.
+
+Value
+similarity matrix
+Author(s)
+Yu Guangchuang
+Examples
+cluster1 <- c("835", "5261","241")
+cluster2 <- c("578","582")
+cluster3 <- c("307", "308", "317")
+clusters <- list(a=cluster1, b=cluster2, c=cluster3)
+mclusterSim(clusters, measure="Wang")
+
+22
+
+rebuildAnnoData
+
+parse_ratio
+
+parse_ratio
+
+Description
+parse character ratio to double value, such as 1/5 to 0.2
+Usage
+parse_ratio(ratio)
+Arguments
+ratio
+
+character vector of ratio to parse
+
+Value
+A numeric vector (double) of parsed ratio
+Author(s)
+Guangchuang Yu
+
+rebuiding annotation data
+
+rebuildAnnoData
+
+Description
+rebuilding entrez and DO mapping datasets
+Usage
+rebuildAnnoData(file)
+Arguments
+file
+
+do_rif.human.txt
+
+Author(s)
+Guangchuang Yu http://guangchuangyu.github.io
+
+setReadable
+
+23
+
+setReadable
+
+setReadable
+
+Description
+mapping geneID to gene Symbol
+Usage
+setReadable(x, OrgDb, keyType = "auto")
+Arguments
+x
+
+enrichResult Object
+
+OrgDb
+
+OrgDb
+
+keyType
+
+keyType of gene
+
+Value
+enrichResult Object
+Author(s)
+Yu Guangchuang
+
+show
+
+show method
+
+Description
+show method for gseaResult instance
+show method for enrichResult instance
+Usage
+show(object)
+show(object)
+Arguments
+object
+
+A enrichResult instance.
+
+24
+
+simplot
+
+Value
+message
+message
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+Guangchuang Yu https://guangchuangyu.github.io
+
+simplot
+
+simplot
+
+Description
+plotting similarity matrix
+Usage
+simplot(
+sim,
+xlab = "",
+ylab = "",
+color.low = "white",
+color.high = "red",
+labs = TRUE,
+digits = 2,
+labs.size = 3,
+font.size = 14
+)
+Arguments
+sim
+
+similarity matrix
+
+xlab
+
+xlab
+
+ylab
+
+ylab
+
+color.low
+
+color of low value
+
+color.high
+
+color of high value
+
+labs
+
+logical, add text label or not
+
+digits
+
+round digit numbers
+
+labs.size
+
+lable size
+
+font.size
+
+font size
+
+Value
+ggplot object
+
+summary
+
+25
+
+Author(s)
+Yu Guangchuang
+
+summary method
+
+summary
+
+Description
+summary method for gseaResult instance
+summary method for enrichResult instance
+Usage
+summary(object, ...)
+summary(object, ...)
+Arguments
+object
+
+A enrichResult instance.
+
+...
+
+additional parameter
+
+Value
+A data frame
+A data frame
+Author(s)
+Guangchuang Yu https://guangchuangyu.github.io
+Guangchuang Yu http://guangchuangyu.github.io
+
+theme_dose
+
+theme_dose
+
+Description
+ggplot theme of DOSE
+Usage
+theme_dose(font.size = 14)
+
+26
+
+theme_dose
+
+Arguments
+font.size
+
+font size
+
+Value
+ggplot theme
+Examples
+library(ggplot2)
+qplot(1:10) + theme_dose()
+
+Index
+∗ classes
+compareClusterResult-class, 4
+enrichResult-class, 12
+gseaResult-class, 16
+∗ datasets
+DataSet, 5
+∗ manip
+enrichDO, 9
+enricher_internal, 10
+gseDGN, 17
+gseDO, 18
+gseNCG, 19
+∗ package
+DOSE-package, 3
+
+enrichNCG, 11
+enrichResult, 3, 5
+enrichResult-class, 12
+EXTID2NAME, 13
+gene2DO, 13
+geneID, 14
+geneInCategory, 14
+geneList (DataSet), 5
+geneSim, 15
+GSEA_internal, 16
+gseahResult-class (gseaResult-class), 16
+gseaResult-class, 16
+gseDGN, 17
+gseDO, 18
+gseNCG, 19
+gsfilter, 20
+
+clusterSim, 3
+compareClusterResult-class, 4
+computeIC, 5
+
+mclusterSim, 21
+DataSet, 5
+DGN_EXTID2PATHID (DataSet), 5
+DGN_PATHID2EXTID (DataSet), 5
+DGN_PATHID2NAME (DataSet), 5
+DO2ALLEG (DataSet), 5
+DO2EG (DataSet), 5
+DOIC (DataSet), 5
+DOLite2EG (DataSet), 5
+DOLiteTerm (DataSet), 5
+DOSE (DOSE-package), 3
+DOSE-package, 3
+doSim, 6
+dotbl (DataSet), 5
+
+NCG_EXTID2PATHID (DataSet), 5
+NCG_PATHID2EXTID (DataSet), 5
+NCG_PATHID2NAME (DataSet), 5
+parse_ratio, 22
+plot,compareClusterResult-method
+(compareClusterResult-class), 4
+rebuildAnnoData, 22
+setReadable, 23
+show, 23
+show,compareClusterResult-method
+(compareClusterResult-class), 4
+show,enrichResult-method
+(enrichResult-class), 12
+show,gseaResult-method
+(gseaResult-class), 16
+simplot, 24
+summary, 25
+
+EG2ALLDO (DataSet), 5
+EG2DO (DataSet), 5
+EG2DOLite (DataSet), 5
+enrichDGN, 6
+enrichDGNv, 7
+enrichDO, 9, 12
+enricher_internal, 10
+27
+
+28
+summary,compareClusterResult-method
+(compareClusterResult-class), 4
+summary,enrichResult-method
+(enrichResult-class), 12
+summary,gseaResult-method
+(gseaResult-class), 16
+theme_dose, 25
+VDGN_EXTID2PATHID (DataSet), 5
+VDGN_PATHID2EXTID (DataSet), 5
+VDGN_PATHID2NAME (DataSet), 5
+
+INDEX
+
+

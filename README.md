@@ -13,3 +13,9 @@ Hmmm .. take a look at the name of dataset no .3 and you'll under sand why :-)
 # seqgendiff
 This is by D Gerard, the American University guy, working solo, who calls every variable a surrogate.
 seqgendiff simulates rnaseq data using an existing dataset.
+I've often gone looking for it.
+
+# pgfmanual
+Not actually R, but Tex did influence Rmd files so it's OK. PGF is closely related to tikz
+and hold promised for fixed image placement.
+

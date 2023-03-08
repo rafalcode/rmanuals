@@ -43,6 +43,8 @@ drop-down menu called Vignettes. In other operating systems, type
 > edgeRUsersGuide()
 at the R prompt to open the User's Guide in a pdf viewer.
 
-
 # ComplexHeatmap, poor "exampling"
 Yes, ComplexHeatmap reference often just says "no example" ... considerably more times thatn any other package I know.
+
+# Polyester 
+A simulation packages, but in fact it goes in what I would call a reverse direction. It takes counts and simulates the reads from them.

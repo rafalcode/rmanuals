@@ -1,0 +1,105 @@
+Can't find a ref man for the flipPlots packages
+
+It's from a a group called DisplayR seemingly connected to Posit aka. rstudio aka. HW
+
+so here it is
+
+SankeyDiagram   R Documentation
+Sankey Diagram
+Description
+Creates a sankey diagram of the relationship between different variables.
+
+Usage
+SankeyDiagram(
+  data = NULL,
+  links.and.nodes = NULL,
+  output.data.only = FALSE,
+  max.categories = 8,
+  subset = NULL,
+  weights = NULL,
+  font.size = 12,
+  font.family = "Times New Roman",
+  font.unit = "px",
+  colors = NULL,
+  link.color = c("None", "Source", "Target", "First variable", "Last variable")[1],
+  variables.share.values = FALSE,
+  label.show.varname = TRUE,
+  label.max.length = 100,
+  label.show.counts = FALSE,
+  label.show.percentages = FALSE,
+  node.position.automatic = TRUE,
+  node.width = 30,
+  node.padding = 10,
+  sinks.right = TRUE,
+  hovertext.show.percentages = FALSE)
+
+Arguments
+
+data    
+A data.frame of variables.
+
+links.and.nodes 
+Input a list structure from a previous call of SankeyDiagram with output.data.only = TRUE.
+
+output.data.only    
+Only outputs the link and node structure without printing the sankey diagram.
+
+max.categories  
+When the number of unique values of numeric data exceeds this value, the variable is quantized.
+
+subset  
+An optional vector specifying a subset of observations to be used in the fitting process.
+
+weights 
+An optional vector of weights. If not provided, the width of the links is proportional to the number of rows in the data frame that correspond to the path (flow).
+
+font.size   
+Font size of node labels.
+
+font.family 
+Font family of node labels.
+
+font.unit   
+One of "px" of "pt". By default all font sizes are specified in terms of pixels ("px"). But changing this to "pt" will mean that the font sizes will be in terms points ("pt"), which will be consistent with font sizes in text boxes.
+
+colors  
+Colors of the nodes, supplied as a vector of hex colors.
+
+link.color  
+One of "None", "Source", "Target", "First variable", "Last variable". This specifies whether the links are shown in grey (None); the same color as the source node; the same color as the target node; or the same color as node in the first or last variable.
+
+variables.share.values  
+If TRUE, and link.color = "Source" or "Target", then the same set colors will be used for each variable.
+
+label.show.varname  
+Show variable name in node label.
+
+label.max.length    
+Maximum number of characters in each node label.
+
+label.show.counts   
+Append count data to node labels.
+
+label.show.percentages  
+Append percentages to node labels.
+
+node.position.automatic 
+Position nodes automatically to reduce the number of overlapping links. This is turned on by default, and when turned off the nodes will be positioned in order they are given in the data.
+
+node.width  
+Width of the width.
+
+node.padding    
+Vertical space between nodes.
+
+sinks.right 
+Logical indicating whether to move the last nodes to the right border of the plot.
+
+hovertext.show.percentages  
+Show percentages instead of counts in the hovertext.
+
+Details
+Text variables are grouped as having text or not having text. To see patterns with text variables, they should first be turned into factors.
+
+Value
+A sankey diagram (HTMLwidget).

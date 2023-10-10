@@ -48,3 +48,7 @@ Yes, ComplexHeatmap reference often just says "no example" ... considerably more
 
 # Polyester 
 A simulation packages, but in fact it goes in what I would call a reverse direction. It takes counts and simulates the reads from them.
+
+# network D3 getting old
+verfied late 2023 only oct 2022 manual available :-(
+

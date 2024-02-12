@@ -52,3 +52,7 @@ A simulation packages, but in fact it goes in what I would call a reverse direct
 # network D3 getting old
 verfied late 2023 only oct 2022 manual available :-(
 
+# MEGENA
+same as ofr network 3D
+verfied late 2023 only oct 2022 manual available :-(
+vignette ... very elementary .. still wants you to name the moduels to plot.
